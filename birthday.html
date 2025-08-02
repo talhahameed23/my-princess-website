@@ -12,6 +12,7 @@
       background: #ffe6f0;
       color: #4a148c;
       overflow-x: hidden;
+      padding-top: 180px; /* Push content down below images */
     }
 
     #container {
@@ -20,7 +21,6 @@
 
     h1 {
       font-size: 2.5em;
-      margin-top: 30px;
       font-weight: bold;
       color: #d81b60;
     }
@@ -40,9 +40,7 @@
     }
 
     .poetry {
-      position: fixed;
-      bottom: 20px;
-      width: 100%;
+      margin-top: 30px;
       font-size: 1.1em;
       color: #880e4f;
       font-family: 'Noto Nastaliq Urdu', serif;
@@ -75,18 +73,13 @@
     }
 
     img.corner-img {
-      width: 120px;
-      height: 120px;
+      width: 100px;
+      height: 100px;
       position: absolute;
       border-radius: 50%;
       object-fit: cover;
       border: 3px solid white;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s ease;
-    }
-
-    img.corner-img:hover {
-      transform: scale(1.05);
     }
 
     #imgLeft {
@@ -97,13 +90,6 @@
     #imgRight {
       top: 10px;
       right: 10px;
-    }
-
-    @media (max-width: 600px) {
-      img.corner-img {
-        width: 70px;
-        height: 70px;
-      }
     }
 
     .balloon {
@@ -117,16 +103,26 @@
       50% { opacity: 1; }
       100% { transform: translateY(-100vh); opacity: 0; }
     }
+
+    @media screen and (max-width: 480px) {
+      img.corner-img {
+        width: 70px;
+        height: 70px;
+      }
+      body {
+        padding-top: 140px;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- 🎀 Corner Images -->
-  <img id="imgLeft" class="corner-img" src="ayesha1.jpg" alt="Left Side">
-  <img id="imgRight" class="corner-img" src="ayesha2.jpg" alt="Right Side">
+  <!-- Images on top corners -->
+  <img id="imgLeft" class="corner-img" src="ayesha1.jpg" alt="Left Image">
+  <img id="imgRight" class="corner-img" src="ayesha2.jpg" alt="Right Image">
 
   <div id="container">
-    <h1>My Princess 👑</h1>
+    <h1 id="dynamicTitle">My Princess 👑</h1>
     <div class="quote">"You are the smile I put on without even thinking 💖"</div>
 
     <div class="countdown" id="countdown"></div>
@@ -137,15 +133,13 @@
       <button onclick="submitMessage()">Send</button>
       <p id="submitMsg"></p>
     </div>
+
+    <div class="poetry" id="poetry"></div>
   </div>
 
-  <!-- Urdu Poetry -->
-  <div class="poetry" id="poetry"></div>
-
-  <!-- Firebase SDK -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyBxxu4ed075DvDAJAmBR89kEX3RRlYX7Mo",
@@ -160,7 +154,18 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 🎂 Countdown Logic
+    function submitMessage() {
+      const msg = document.getElementById("messageInput").value.trim();
+      if (msg.length === 0) return;
+      db.ref("talhaMessages").push({
+        text: msg,
+        timestamp: new Date().toISOString()
+      });
+      document.getElementById("submitMsg").innerText = "💌 Message Sent!";
+      document.getElementById("messageInput").value = "";
+    }
+
+    // Countdown
     const targetDate = new Date("August 13, 2025 00:00:00").getTime();
     const countdown = document.getElementById("countdown");
     setInterval(() => {
@@ -177,7 +182,12 @@
       countdown.innerHTML = `Only ${d}d ${h}h ${m}m ${s}s left until her birthday! 💝`;
     }, 1000);
 
-    // 💬 Poetry Change Daily
+    // Daily Changing Title Font
+    const fonts = ["cursive", "monospace", "fantasy", "serif", "Georgia", "Impact"];
+    const todayIndex = new Date().getDate() % fonts.length;
+    document.getElementById("dynamicTitle").style.fontFamily = fonts[todayIndex];
+
+    // Urdu Poetry
     const urduPoetry = [
       "تیری مسکراہٹ میری دنیا کو روشن کرتی ہے 🌸",
       "تو چاندنی راتوں کی وہ روشنی ہے جو دل کو چھو جائے ✨",
@@ -189,21 +199,9 @@
     let dailyIndex = [...dateStr].reduce((sum, char) => sum + char.charCodeAt(0), 0);
     dailyIndex = dailyIndex % urduPoetry.length;
     document.getElementById("poetry").innerText = urduPoetry[dailyIndex];
-
-    // 💌 Submit Message
-    function submitMessage() {
-      const msg = document.getElementById("messageInput").value.trim();
-      if (msg.length === 0) return;
-      db.ref("talhaMessages").push({
-        text: msg,
-        timestamp: new Date().toISOString()
-      });
-      document.getElementById("submitMsg").innerText = "💌 Message Sent!";
-      document.getElementById("messageInput").value = "";
-    }
   </script>
 
-  <!-- 🎈 Balloons -->
+  <!-- Balloons -->
   <script>
     for (let i = 0; i < 15; i++) {
       const balloon = document.createElement('div');
@@ -215,6 +213,5 @@
       document.body.appendChild(balloon);
     }
   </script>
-
 </body>
 </html>
