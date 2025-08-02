@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome My Princess</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <style>
+    body {
+      background: linear-gradient(to right, #ffe6f0, #ffc1e3);
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      padding: 30px;
+    }
+    .box {
+      background: white;
+      padding: 30px;
+      max-width: 400px;
+      margin: auto;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #d81b60;
+      color: white;
+      padding: 12px 20px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    #error {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>My Princess Birthday 💖</h2>
+  <form id="entryForm">
+    <input type="text" id="nameInput" placeholder="Your Name" required />
+    <input type="text" id="nicknameInput" placeholder="Name Called by Talha" required />
+    <input type="date" id="talkDateInput" required />
+    <input type="password" id="passwordInput" placeholder="Secret Password" required />
+    <button type="submit">Continue →</button>
+    <div id="error"></div>
+  </form>
+</div>
+
+<!-- ✅ Moved script to bottom so it loads AFTER the form -->
+<script>
+  // ✅ Firebase Config
+  var firebaseConfig = {
+    apiKey: "AIzaSyBxxu4ed075DvDAJAmBR89kEX3RRlYX7Mo",
+    authDomain: "birthday-bf711.firebaseapp.com",
+    databaseURL: "https://birthday-bf711-default-rtdb.firebaseio.com",
+    projectId: "birthday-bf711",
+    storageBucket: "birthday-bf711.appspot.com",
+    messagingSenderId: "116502579431",
+    appId: "1:116502579431:web:56e1034a14036f80c5ba42",
+    measurementId: "G-YRNZYDPLBW"
+  };
+
+  // ✅ Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  var database = firebase.database();
+
+  // ✅ Add listener to the form
+  document.getElementById("entryForm").addEventListener("submit", submitForm);
+
+  function submitForm(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("nameInput").value.trim();
+    const nickname = document.getElementById("nicknameInput").value.trim();
+    const talkDate = document.getElementById("talkDateInput").value.trim();
+    const password = document.getElementById("passwordInput").value.trim();
+
+    console.log("Form submitted");
+    console.log("Name:", name, "Nickname:", nickname, "Date:", talkDate);
+
+    if (password !== "Ayesha!!! Talha Love You") {
+      document.getElementById("error").innerText = "❌ Wrong Password!";
+      return;
+    }
+
+    console.log("Password correct. Saving to Firebase...");
+
+    const entryRef = database.ref("entryInfo").push();
+    entryRef.set({
+      name: name,
+      nickname: nickname,
+      talkDate: talkDate,
+      timestamp: new Date().toISOString()
+    }, (error) => {
+      if (error) {
+        console.error("Firebase error:", error);
+        document.getElementById("error").innerText = "❌ Error saving data.";
+      } else {
+        console.log("✅ Data saved successfully.");
+        window.location.href = "birthday.html";
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
