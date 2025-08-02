@@ -75,8 +75,8 @@
     }
 
     img.corner-img {
-      width: 150px;
-      height: 150px;
+      width: 120px;
+      height: 120px;
       position: absolute;
       border-radius: 50%;
       object-fit: cover;
@@ -99,6 +99,13 @@
       right: 10px;
     }
 
+    @media (max-width: 600px) {
+      img.corner-img {
+        width: 70px;
+        height: 70px;
+      }
+    }
+
     .balloon {
       position: absolute;
       width: 40px;
@@ -114,7 +121,7 @@
 </head>
 <body>
 
-  <!-- 🎀 Top Corner Images -->
+  <!-- 🎀 Corner Images -->
   <img id="imgLeft" class="corner-img" src="ayesha1.jpg" alt="Left Side">
   <img id="imgRight" class="corner-img" src="ayesha2.jpg" alt="Right Side">
 
@@ -135,7 +142,7 @@
   <!-- Urdu Poetry -->
   <div class="poetry" id="poetry"></div>
 
-  <!-- ✅ Firebase -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
@@ -170,7 +177,7 @@
       countdown.innerHTML = `Only ${d}d ${h}h ${m}m ${s}s left until her birthday! 💝`;
     }, 1000);
 
-    // 💬 Urdu Poetry Logic - daily change based on full date
+    // 💬 Poetry Change Daily
     const urduPoetry = [
       "تیری مسکراہٹ میری دنیا کو روشن کرتی ہے 🌸",
       "تو چاندنی راتوں کی وہ روشنی ہے جو دل کو چھو جائے ✨",
@@ -178,12 +185,12 @@
       "تم ہو خوبصورتی کی تعریف، تم پہ سب قربان ❤️",
       "تجھ سے حسین کوئی لمحہ نہیں 💫"
     ];
-    const dateStr = new Date().toISOString().split('T')[0]; // "2025-08-02"
+    const dateStr = new Date().toISOString().split('T')[0];
     let dailyIndex = [...dateStr].reduce((sum, char) => sum + char.charCodeAt(0), 0);
     dailyIndex = dailyIndex % urduPoetry.length;
     document.getElementById("poetry").innerText = urduPoetry[dailyIndex];
 
-    // 💌 Message Submission
+    // 💌 Submit Message
     function submitMessage() {
       const msg = document.getElementById("messageInput").value.trim();
       if (msg.length === 0) return;
@@ -196,7 +203,7 @@
     }
   </script>
 
-  <!-- 🎈 Floating Balloons -->
+  <!-- 🎈 Balloons -->
   <script>
     for (let i = 0; i < 15; i++) {
       const balloon = document.createElement('div');
@@ -208,5 +215,6 @@
       document.body.appendChild(balloon);
     }
   </script>
+
 </body>
 </html>
