@@ -2,119 +2,103 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>My Princess 👑</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>It's Your Day My Girl 🎉</title>
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lora&family=Playfair+Display&display=swap"
+    rel="stylesheet"
+  />
+
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
+      padding: 0;
+      background:
+        linear-gradient(
+          rgba(255, 182, 193, 0.6),
+          rgba(219, 112, 147, 0.7)
+        ),
+        url('bd9.jpg') no-repeat center center;
+      background-size: cover;
+      font-family: 'Lora', serif;
+      color: #fff;
       text-align: center;
-      background: #ffe6f0;
-      color: #4a148c;
       overflow-x: hidden;
-      position: relative;
       min-height: 100vh;
-      padding-top: 140px; /* Space for corner images */
-    }
-
-    #container {
-      padding: 20px;
-      max-width: 600px;
-      margin: 0 auto;
     }
 
     h1 {
-      font-size: 2.5em;
-      margin-top: 20px;
-      font-weight: bold;
-      color: #d81b60;
+      font-family: 'Great Vibes', cursive;
+      font-size: 3em;
+      margin-top: 40px;
+      color: #fff8f0;
+      text-shadow: 2px 2px 8px #e91e63;
     }
 
-    .quote {
-      font-size: 1.2em;
-      margin-top: 15px;
-      color: #6a1b9a;
+    .emoji-line {
+      font-size: 2em;
+      margin: 10px 0 20px;
+    }
+
+    .quote-section {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25em;
       font-style: italic;
+      color: #fffde7;
+      padding: 0 25px;
+      line-height: 1.6em;
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      display: inline-block;
+      margin-bottom: 20px;
+      max-width: 700px;
     }
 
-    .countdown {
-      margin-top: 40px;
-      font-size: 1.5em;
-      font-weight: bold;
-      color: #ad1457;
-    }
-
-    .poetry {
-      position: fixed;
-      bottom: 20px;
-      width: 100%;
-      font-size: 1.1em;
-      color: #880e4f;
+    .urdu {
       font-family: 'Noto Nastaliq Urdu', serif;
-    }
-
-    #writeBox {
-      margin-top: 40px;
-    }
-
-    textarea {
-      width: 90%;
-      max-width: 400px;
-      height: 100px;
-      border-radius: 10px;
-      padding: 10px;
-      font-size: 1em;
-      border: 1px solid #ccc;
-      resize: none;
-    }
-
-    button {
+      direction: rtl;
+      font-size: 1.3em;
+      font-weight: 500;
       margin-top: 10px;
-      padding: 10px 20px;
-      background-color: #8e24aa;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1em;
-      cursor: pointer;
+      color: #fce4ec;
     }
 
-    img.corner-img {
-      width: 120px;
-      height: 120px;
-      position: fixed;
-      top: 10px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid white;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s ease;
-      z-index: 10;
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 40px 20px;
+      max-width: 1100px;
+      margin: 0 auto 60px auto;
     }
 
-    img.corner-img:hover {
+    .gallery-item {
+      flex: 1 1 auto;
+      max-width: 180px; /* Maximum width of each image container */
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .gallery img {
+      width: auto;
+      max-width: 100%;
+      height: auto;
+      max-height: 180px;
+      object-fit: contain;
+      transition: transform 0.4s ease;
+      display: block;
+    }
+
+    .gallery-item:hover img {
       transform: scale(1.05);
-    }
-
-    #imgLeft {
-      left: 10px;
-    }
-
-    #imgRight {
-      right: 10px;
-    }
-
-    @media (max-width: 600px) {
-      img.corner-img {
-        width: 70px;
-        height: 70px;
-      }
-    }
-
-    .balloon {
-      position: absolute;
-      width: 40px;
-      animation: float 6s infinite ease-in-out;
     }
 
     @keyframes float {
@@ -131,143 +115,68 @@
       }
     }
 
-    /* Birthday wishes styling - initially hidden */
-    #birthdayWishes {
-      display: none;
-      margin-top: 50px;
-      color: #d81b60;
+    .balloon {
+      position: absolute;
       font-size: 2em;
-      font-weight: bold;
-      animation: fadeIn 2s ease-in-out forwards;
+      animation: float 6s infinite ease-in-out;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2em;
       }
-      to {
-        opacity: 1;
+      .quote-section {
+        max-width: 90%;
+        padding: 15px;
+        font-size: 1em;
+      }
+      .urdu {
+        font-size: 1.1em;
+      }
+      .gallery-item {
+        max-width: 140px;
+      }
+      .gallery img {
+        max-height: 140px;
       }
     }
   </style>
 </head>
 <body>
-  <!-- 🎀 Corner Images -->
-  <img id="imgLeft" class="corner-img" src="ayesha1.jpg" alt="Left Side" />
-  <img id="imgRight" class="corner-img" src="ayesha2.jpg" alt="Right Side" />
+  <h1>It's your day my girl 💖👑🎂</h1>
+  <div class="emoji-line">🎉✨💝🌸💫🎁</div>
 
-  <div id="container">
-    <h1>My Princess 👑</h1>
-    <div class="quote">"You are the smile I put on without even thinking 💖"</div>
-
-    <!-- Countdown container -->
-    <div class="countdown" id="countdown"></div>
-
-    <!-- Birthday wishes container -->
-    <div id="birthdayWishes">
-      🎉🎂 Happy Birthday, My Princess! 🎂🎉
-      <p>It's your special day — enjoy every moment! 💝</p>
-    </div>
-
-    <div id="writeBox">
-      <h3>One line For Talha 💌</h3>
-      <textarea id="messageInput" maxlength="1000" placeholder="Write something sweet..."></textarea
-      ><br />
-      <button onclick="submitMessage()">Send</button>
-      <p id="submitMsg"></p>
+  <div class="quote-section">
+    "You are the sunshine that lights up my world. Happy Birthday, love! 💕"
+    <br />
+    "In your smile I see something more beautiful than the stars. 🌌"
+    <div class="urdu">
+      تمہاری مسکراہٹ میرے دل کا سکون ہے 💗<br />
+      تم میرے خوابوں کی تعبیر ہو، سالگرہ مبارک ❤️🎉
     </div>
   </div>
 
-  <!-- Urdu Poetry -->
-  <div class="poetry" id="poetry"></div>
+  <div class="gallery">
+    <div class="gallery-item"><img src="bd1.jpg" alt="pic1" /></div>
+    <div class="gallery-item"><img src="bd2.jpg" alt="pic2" /></div>
+    <div class="gallery-item"><img src="bd3.jpg" alt="pic3" /></div>
+    <div class="gallery-item"><img src="bd4.jpg" alt="pic4" /></div>
+    <div class="gallery-item"><img src="bd5.jpg" alt="pic5" /></div>
+    <div class="gallery-item"><img src="bd6.jpg" alt="pic6" /></div>
+    <div class="gallery-item"><img src="bd7.jpg" alt="pic7" /></div>
+    <div class="gallery-item"><img src="bd8.jpg" alt="pic8" /></div>
+    <!-- bd10 removed as requested -->
+    <div class="gallery-item"><img src="bd11.jpg" alt="pic11" /></div>
+  </div>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBxxu4ed075DvDAJAmBR89kEX3RRlYX7Mo",
-      authDomain: "birthday-bf711.firebaseapp.com",
-      databaseURL: "https://birthday-bf711-default-rtdb.firebaseio.com",
-      projectId: "birthday-bf711",
-      storageBucket: "birthday-bf711.appspot.com",
-      messagingSenderId: "116502579431",
-      appId: "1:116502579431:web:56e1034a14036f80c5ba42",
-      measurementId: "G-YRNZYDPLBW",
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    // Birthday date set to today midnight for demo
-    const today = new Date();
-    const targetDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
-
-    const countdownEl = document.getElementById("countdown");
-    const birthdayEl = document.getElementById("birthdayWishes");
-
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const diff = targetDate - now;
-
-      if (diff <= 0) {
-        // Birthday reached or passed - show birthday wishes
-        countdownEl.style.display = "none";
-        birthdayEl.style.display = "block";
-      } else {
-        // Show countdown timer
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-        countdownEl.innerHTML = `Only ${days}d ${hours}h ${minutes}m ${seconds}s left until her birthday! 💝`;
-        birthdayEl.style.display = "none";
-        countdownEl.style.display = "block";
-      }
-    }
-
-    // Update countdown every second
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
-
-    // 💬 Urdu Poetry daily change logic
-    const urduPoetry = [
-      "تیری مسکراہٹ میری دنیا کو روشن کرتی ہے 🌸",
-      "تو چاندنی راتوں کی وہ روشنی ہے جو دل کو چھو جائے ✨",
-      "تیری آنکھوں میں کھو جانا ہی میری جنت ہے 💖",
-      "تم ہو خوبصورتی کی تعریف، تم پہ سب قربان ❤️",
-      "تجھ سے حسین کوئی لمحہ نہیں 💫",
-    ];
-    const dateStr = new Date().toISOString().split("T")[0];
-    let dailyIndex = [...dateStr].reduce((sum, char) => sum + char.charCodeAt(0), 0);
-    dailyIndex = dailyIndex % urduPoetry.length;
-    document.getElementById("poetry").innerText = urduPoetry[dailyIndex];
-
-    // 💌 Submit Message function
-    function submitMessage() {
-      const msg = document.getElementById("messageInput").value.trim();
-      if (msg.length === 0) return;
-      db.ref("talhaMessages").push({
-        text: msg,
-        timestamp: new Date().toISOString(),
-      });
-      document.getElementById("submitMsg").innerText = "💌 Message Sent!";
-      document.getElementById("messageInput").value = "";
-    }
-  </script>
-
-  <!-- 🎈 Balloons animation -->
   <script>
     for (let i = 0; i < 15; i++) {
-      const balloon = document.createElement("div");
-      balloon.className = "balloon";
-      balloon.style.left = `${Math.random() * 100}vw`;
-      balloon.style.top = `${Math.random() * 100}vh`;
-      balloon.innerHTML = "🎈";
-      balloon.style.animationDuration = `${4 + Math.random() * 4}s`;
+      const balloon = document.createElement('div');
+      balloon.className = 'balloon';
+      balloon.style.left = ${Math.random() * 100}vw;
+      balloon.style.top = ${Math.random() * 100}vh;
+      balloon.innerHTML = '🎈';
+      balloon.style.animationDuration = ${4 + Math.random() * 4}s;
       document.body.appendChild(balloon);
     }
   </script>
