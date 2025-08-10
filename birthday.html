@@ -12,28 +12,33 @@
       background: #ffe6f0;
       color: #4a148c;
       overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+      padding-top: 140px; /* Space for corner images */
     }
 
     #container {
       padding: 20px;
+      max-width: 600px;
+      margin: 0 auto;
     }
 
     h1 {
       font-size: 2.5em;
-      margin-top: 30px;
+      margin-top: 20px;
       font-weight: bold;
       color: #d81b60;
     }
 
     .quote {
       font-size: 1.2em;
-      margin-top: 10px;
+      margin-top: 15px;
       color: #6a1b9a;
       font-style: italic;
     }
 
     .countdown {
-      margin-top: 30px;
+      margin-top: 40px;
       font-size: 1.5em;
       font-weight: bold;
       color: #ad1457;
@@ -77,12 +82,14 @@
     img.corner-img {
       width: 120px;
       height: 120px;
-      position: absolute;
+      position: fixed;
+      top: 10px;
       border-radius: 50%;
       object-fit: cover;
       border: 3px solid white;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
       transition: transform 0.3s ease;
+      z-index: 10;
     }
 
     img.corner-img:hover {
@@ -90,12 +97,10 @@
     }
 
     #imgLeft {
-      top: 10px;
       left: 10px;
     }
 
     #imgRight {
-      top: 10px;
       right: 10px;
     }
 
@@ -137,8 +142,12 @@
     }
 
     @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
     }
   </style>
 </head>
@@ -190,8 +199,10 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // Birthday date: August 13, 2025 midnight
-    const targetDate = new Date("August 13, 2025 00:00:00").getTime();
+    // Birthday date set to today midnight for demo
+    const today = new Date();
+    const targetDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+
     const countdownEl = document.getElementById("countdown");
     const birthdayEl = document.getElementById("birthdayWishes");
 
