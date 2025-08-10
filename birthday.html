@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>My Princess 👑</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       margin: 0;
@@ -12,7 +12,6 @@
       background: #ffe6f0;
       color: #4a148c;
       overflow-x: hidden;
-      padding-top: 180px; /* Push content down below images */
     }
 
     #container {
@@ -21,6 +20,7 @@
 
     h1 {
       font-size: 2.5em;
+      margin-top: 30px;
       font-weight: bold;
       color: #d81b60;
     }
@@ -40,7 +40,9 @@
     }
 
     .poetry {
-      margin-top: 30px;
+      position: fixed;
+      bottom: 20px;
+      width: 100%;
       font-size: 1.1em;
       color: #880e4f;
       font-family: 'Noto Nastaliq Urdu', serif;
@@ -73,13 +75,18 @@
     }
 
     img.corner-img {
-      width: 100px;
-      height: 100px;
+      width: 120px;
+      height: 120px;
       position: absolute;
       border-radius: 50%;
       object-fit: cover;
       border: 3px solid white;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    img.corner-img:hover {
+      transform: scale(1.05);
     }
 
     #imgLeft {
@@ -92,6 +99,13 @@
       right: 10px;
     }
 
+    @media (max-width: 600px) {
+      img.corner-img {
+        width: 70px;
+        height: 70px;
+      }
+    }
+
     .balloon {
       position: absolute;
       width: 40px;
@@ -99,47 +113,69 @@
     }
 
     @keyframes float {
-      0% { transform: translateY(100vh); opacity: 0; }
-      50% { opacity: 1; }
-      100% { transform: translateY(-100vh); opacity: 0; }
+      0% {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh);
+        opacity: 0;
+      }
     }
 
-    @media screen and (max-width: 480px) {
-      img.corner-img {
-        width: 70px;
-        height: 70px;
-      }
-      body {
-        padding-top: 140px;
-      }
+    /* Birthday wishes styling - initially hidden */
+    #birthdayWishes {
+      display: none;
+      margin-top: 50px;
+      color: #d81b60;
+      font-size: 2em;
+      font-weight: bold;
+      animation: fadeIn 2s ease-in-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
     }
   </style>
 </head>
 <body>
-
-  <!-- Images on top corners -->
-  <img id="imgLeft" class="corner-img" src="ayesha1.jpg" alt="Left Image">
-  <img id="imgRight" class="corner-img" src="ayesha2.jpg" alt="Right Image">
+  <!-- 🎀 Corner Images -->
+  <img id="imgLeft" class="corner-img" src="ayesha1.jpg" alt="Left Side" />
+  <img id="imgRight" class="corner-img" src="ayesha2.jpg" alt="Right Side" />
 
   <div id="container">
-    <h1 id="dynamicTitle">My Princess 👑</h1>
+    <h1>My Princess 👑</h1>
     <div class="quote">"You are the smile I put on without even thinking 💖"</div>
 
+    <!-- Countdown container -->
     <div class="countdown" id="countdown"></div>
+
+    <!-- Birthday wishes container -->
+    <div id="birthdayWishes">
+      🎉🎂 Happy Birthday, My Princess! 🎂🎉
+      <p>It's your special day — enjoy every moment! 💝</p>
+    </div>
 
     <div id="writeBox">
       <h3>One line For Talha 💌</h3>
-      <textarea id="messageInput" maxlength="1000" placeholder="Write something sweet..."></textarea><br>
+      <textarea id="messageInput" maxlength="1000" placeholder="Write something sweet..."></textarea
+      ><br />
       <button onclick="submitMessage()">Send</button>
       <p id="submitMsg"></p>
     </div>
-
-    <div class="poetry" id="poetry"></div>
   </div>
 
-  <!-- Firebase -->
+  <!-- Urdu Poetry -->
+  <div class="poetry" id="poetry"></div>
+
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyBxxu4ed075DvDAJAmBR89kEX3RRlYX7Mo",
@@ -149,66 +185,77 @@
       storageBucket: "birthday-bf711.appspot.com",
       messagingSenderId: "116502579431",
       appId: "1:116502579431:web:56e1034a14036f80c5ba42",
-      measurementId: "G-YRNZYDPLBW"
+      measurementId: "G-YRNZYDPLBW",
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    function submitMessage() {
-      const msg = document.getElementById("messageInput").value.trim();
-      if (msg.length === 0) return;
-      db.ref("talhaMessages").push({
-        text: msg,
-        timestamp: new Date().toISOString()
-      });
-      document.getElementById("submitMsg").innerText = "💌 Message Sent!";
-      document.getElementById("messageInput").value = "";
+    // Birthday date: August 13, 2025 midnight
+    const targetDate = new Date("August 13, 2025 00:00:00").getTime();
+    const countdownEl = document.getElementById("countdown");
+    const birthdayEl = document.getElementById("birthdayWishes");
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const diff = targetDate - now;
+
+      if (diff <= 0) {
+        // Birthday reached or passed - show birthday wishes
+        countdownEl.style.display = "none";
+        birthdayEl.style.display = "block";
+      } else {
+        // Show countdown timer
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        countdownEl.innerHTML = `Only ${days}d ${hours}h ${minutes}m ${seconds}s left until her birthday! 💝`;
+        birthdayEl.style.display = "none";
+        countdownEl.style.display = "block";
+      }
     }
 
-    // Countdown
-    const targetDate = new Date("August 13, 2025 00:00:00").getTime();
-    const countdown = document.getElementById("countdown");
-    setInterval(() => {
-      const now = new Date().getTime();
-      const distance = targetDate - now;
-      if (distance < 0) {
-        countdown.innerHTML = "🎉 Happy Birthday, My Princess!";
-        return;
-      }
-      const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const s = Math.floor((distance % (1000 * 60)) / 1000);
-      countdown.innerHTML = `Only ${d}d ${h}h ${m}m ${s}s left until her birthday! 💝`;
-    }, 1000);
+    // Update countdown every second
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
 
-    // Daily Changing Title Font
-    const fonts = ["cursive", "monospace", "fantasy", "serif", "Georgia", "Impact"];
-    const todayIndex = new Date().getDate() % fonts.length;
-    document.getElementById("dynamicTitle").style.fontFamily = fonts[todayIndex];
-
-    // Urdu Poetry
+    // 💬 Urdu Poetry daily change logic
     const urduPoetry = [
       "تیری مسکراہٹ میری دنیا کو روشن کرتی ہے 🌸",
       "تو چاندنی راتوں کی وہ روشنی ہے جو دل کو چھو جائے ✨",
       "تیری آنکھوں میں کھو جانا ہی میری جنت ہے 💖",
       "تم ہو خوبصورتی کی تعریف، تم پہ سب قربان ❤️",
-      "تجھ سے حسین کوئی لمحہ نہیں 💫"
+      "تجھ سے حسین کوئی لمحہ نہیں 💫",
     ];
-    const dateStr = new Date().toISOString().split('T')[0];
+    const dateStr = new Date().toISOString().split("T")[0];
     let dailyIndex = [...dateStr].reduce((sum, char) => sum + char.charCodeAt(0), 0);
     dailyIndex = dailyIndex % urduPoetry.length;
     document.getElementById("poetry").innerText = urduPoetry[dailyIndex];
+
+    // 💌 Submit Message function
+    function submitMessage() {
+      const msg = document.getElementById("messageInput").value.trim();
+      if (msg.length === 0) return;
+      db.ref("talhaMessages").push({
+        text: msg,
+        timestamp: new Date().toISOString(),
+      });
+      document.getElementById("submitMsg").innerText = "💌 Message Sent!";
+      document.getElementById("messageInput").value = "";
+    }
   </script>
 
-  <!-- Balloons -->
+  <!-- 🎈 Balloons animation -->
   <script>
     for (let i = 0; i < 15; i++) {
-      const balloon = document.createElement('div');
-      balloon.className = 'balloon';
+      const balloon = document.createElement("div");
+      balloon.className = "balloon";
       balloon.style.left = `${Math.random() * 100}vw`;
       balloon.style.top = `${Math.random() * 100}vh`;
-      balloon.innerHTML = '🎈';
+      balloon.innerHTML = "🎈";
       balloon.style.animationDuration = `${4 + Math.random() * 4}s`;
       document.body.appendChild(balloon);
     }
